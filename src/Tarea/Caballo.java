@@ -82,6 +82,6 @@ public class Caballo {
             {0, 0, 0, 0, 0},
         }; 
         laberintoA(m, 0, 0, iFin, jFin, 1); 
-        System.out.println("Soluciones: "+soluciones);
+        System.out.println("Soluciones123: "+soluciones); 
     }
 }
