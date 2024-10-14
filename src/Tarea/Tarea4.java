@@ -17,12 +17,16 @@ public class Tarea4 {
 //   Caminos de Rey, Caballo, Torre, Alfil y la Dama. 
 //    Dado una matriz de n x m, inicialmente con valores de ceros (Sin Atajos).
 //    Implementar Algoritmos con llamadas recursivas desde un ciclo,
-//    para cada uno de los problemas de los movimientos de: Rey, Caballo,Torre, Alfil y Dama. 
+//    para cada uno de los problemas de los movimientos de: Rey, Caballo,Torre, Alfil y Dama.    
+    
 //Implementar y ejecutar para diferentes valores de n y m. (No necesariamente matriz cuadrada)
+    
+    
+    
+    
 //a)     Algoritmo para mostrar todos los caminos posibles desde una
 //       posición inicial a una posición final. Además,
 //       mostrar la cantidad de soluciones posibles.
-
     public static boolean posValida(int m[][], int i, int j) {
         return i >= 0 && i < m.length && j >= 0
                 && j < m[i].length && m[i][j] == 0;
@@ -57,7 +61,6 @@ public class Tarea4 {
             alfilA(m, i + k, j - k, iFin, jFin, paso + 1); // Abajo-Izquierda
             alfilA(m, i + k, j + k, iFin, jFin, paso + 1); // Abajo-Derecha
         }
-
         m[i][j] = 0; // Backtracking
     }
 
@@ -182,7 +185,6 @@ public class Tarea4 {
 //            Además, mostrar la cantidad de soluciones posibles.
     // Clase auxiliar para representar un estado del tablero
     static class Estado {
-
         int i, j;  // Coordenadas en el tablero
         List<int[]> camino;  // Camino recorrido hasta el momento
 
@@ -252,6 +254,9 @@ public class Tarea4 {
     
 //    3. Proponer un nuevo problema creativo e interesante, 
 //       aplicando las ideas de los problemas anteriores. Citar fuente.
+    
+    
+    
     public static void main(String[] args) {
         int n = 4;
         int m = 4;
@@ -273,9 +278,7 @@ public class Tarea4 {
 //        System.out.println("Cantidad de soluciones: " + solucionD);
         // Iniciar la búsqueda desde (0, 0) hasta (3, 3)
 //         int a[][] = new int[3][3]; 
-//        bfsMinLongitud(a, 0, 0, 2, 2);
-
-        
+//        bfsMinLongitud(a, 0, 0, 2, 2);        
     }
 
 }
