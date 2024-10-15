@@ -38,6 +38,10 @@ public class Tarea1_2 {
     } 
      
      // Problema B 
+//    b)      Algoritmo para mostrar todos los caminos posibles desde
+//            una posición inicial a una posición final tal que se
+//            visiten todas las casillas de la matriz. 
+//            Además, mostrar la cantidad de soluciones posibles.
     public static void laberinto2(int m[][], int i, int j, int iFin, int jFin,
                                   int paso, int totalVisitadas, int totalCasillas) { 
         if (!posValida(m, i, j)) return; // Verifica si la posición es válida 
@@ -65,6 +69,10 @@ public class Tarea1_2 {
     } 
      
      // Problema C 
+    //    c)      Algoritmo para mostrar todos los caminos posibles desde
+//            una posición inicial a una posición final tal que NO se
+//            visiten todas las casillas de la matriz. Además,
+//            mostrar la cantidad de soluciones posibles.
     public static void laberinto3(int m[][], int i, int j, int iFin, int jFin,
                                   int paso, int totalVisitadas, int totalCasillas) { 
         if (!posValida(m, i, j)) return; // Verificar si la posición es válida 
@@ -90,6 +98,9 @@ public class Tarea1_2 {
     } 
      
      // Problema D      
+    //    d)      Algoritmo para mostrar todos los caminos posibles de máxima 
+//            longitud desde una posición inicial a una posición final. 
+//            Además, mostrar la cantidad de soluciones posibles.
     public static void laberinto4(int m[][], int i, int j, int iFin, int jFin, 
                                   int paso, int totalVisitadas, int maxLongitud) { 
         if (!posValida(m, i, j)) return; // Verificar si la posición es válida 
@@ -115,7 +126,10 @@ public class Tarea1_2 {
         m[i][j] = 0; // Desmarcar la posición para explorar otros caminos 
     } 
      
-     // Problema E 
+     // Problema E
+    //    e)      Algoritmo para mostrar todos los caminos posibles 
+//            de mínima longitud desde una posición inicial a una posición final. 
+//            Además, mostrar la cantidad de soluciones posibles.
      
     public static void laberinto5(int m[][], int i, int j, int iFin, int jFin,
                                   int paso, int totalVisitadas, int minLongitod) { 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import Tarea.Regla;
+import static Tarea.Regla.reglasAplicablesAlfil;
 
 //MOVIMIENTO DE REY, CABALLO, TORRE, ALFIL, DAMA.
 public class Tarea4 {
@@ -135,119 +137,139 @@ public class Tarea4 {
                 alfilC(m, i + k, j + k, iFin, jFin, paso + 1); // Abajo-Derecha
             }
         }
-
         // Backtracking: desmarcar la casilla actual para futuras exploraciones
         m[i][j] = 0;
     }
+    
+    public static int c = 0;
+    public static void LaberintoAlfilC(int m[][], int i, int j, int ifin, int jfin, int paso) {
+        if (!posValida(m, i, j)) {
+            return;
+        }
+        m[i][j] = paso;
+        if (i == ifin && j == jfin) {
+            mostrar(m);
+            c++;
+        }
+        LinkedList<Regla> L1 = reglasAplicablesAlfil(m, i, j);
+        while (!L1.isEmpty()) {
+            Regla R = L1.removeFirst();   // Elige la 1ra Regla y elimina
+            LaberintoAlfilC(m, R.fil, R.col, ifin, jfin, paso + 1);
+            m[R.fil][R.col] = 0;
+        }
+    }
+    
+    
 
 //    d)      Algoritmo para mostrar todos los caminos posibles de máxima 
 //            longitud desde una posición inicial a una posición final. 
 //            Además, mostrar la cantidad de soluciones posibles.
+    
     static int maxLongitud = 0;
 
-    public static void alfilD(int[][] m, int i, int j, int iFin, int jFin, int paso) {
-        // Si la posición no es válida, regresamos
+//    public static void alfilD(int[][] m, int i, int j, int iFin, int jFin, int paso) {
+//        // Si la posición no es válida, regresamos
+//        if (!posValida(m, i, j)) {
+//            return;
+//        }
+//
+//        // Marcamos la casilla con el paso actual
+//        m[i][j] = paso;
+//
+//        // Si llegamos a la posición final
+//        if (i == iFin && j == jFin) {
+//            if (paso > maxLongitud) {
+//                // Encontramos un camino más largo, actualizamos la máxima longitud
+//                maxLongitud = paso;
+//                solucionD = 1; // Reiniciamos el contador de soluciones
+//                mostrar(m); // Mostramos el camino de máxima longitud
+//            } else if (paso == maxLongitud) {
+//                // Si el camino tiene la máxima longitud conocida, contamos una solución más
+//                solucionD++;
+//                mostrar(m);
+//            }
+//        } else {
+//            // Exploramos las cuatro diagonales en todas sus posibilidades
+//            for (int k = 1; k < m.length; k++) {
+//                alfilD(m, i - k, j - k, iFin, jFin, paso + 1); // Arriba-Izquierda
+//                alfilD(m, i - k, j + k, iFin, jFin, paso + 1); // Arriba-Derecha
+//                alfilD(m, i + k, j - k, iFin, jFin, paso + 1); // Abajo-Izquierda
+//                alfilD(m, i + k, j + k, iFin, jFin, paso + 1); // Abajo-Derecha
+//            }
+//        }
+//
+//        // Backtracking: Desmarcamos la casilla para futuras exploraciones
+//        m[i][j] = 0;
+//    }
+    
+    public static int d = 0;
+    public static void LaberintoAlfilD(int[][] m, int i, int j, int ifin, int jfin, int paso, 
+                                   int totalVisitadas, int max) {
         if (!posValida(m, i, j)) {
-            return;
+            return;  // Si la posición no es válida, terminamos esta rama de recursión.
         }
 
-        // Marcamos la casilla con el paso actual
+        // Marcamos la celda con el paso actual
         m[i][j] = paso;
+        totalVisitadas++;  // Incrementamos el contador de celdas visitadas
 
         // Si llegamos a la posición final
-        if (i == iFin && j == jFin) {
-            if (paso > maxLongitud) {
-                // Encontramos un camino más largo, actualizamos la máxima longitud
-                maxLongitud = paso;
-                solucionD = 1; // Reiniciamos el contador de soluciones
-                mostrar(m); // Mostramos el camino de máxima longitud
-            } else if (paso == maxLongitud) {
-                // Si el camino tiene la máxima longitud conocida, contamos una solución más
-                solucionD++;
-                mostrar(m);
+        if (i == ifin && j == jfin) {
+            if (totalVisitadas > max) {                            
+                mostrar(m);  // Mostramos el camino de máxima longitud            
+                d++;                
             }
         } else {
-            // Exploramos las cuatro diagonales en todas sus posibilidades
-            for (int k = 1; k < m.length; k++) {
-                alfilD(m, i - k, j - k, iFin, jFin, paso + 1); // Arriba-Izquierda
-                alfilD(m, i - k, j + k, iFin, jFin, paso + 1); // Arriba-Derecha
-                alfilD(m, i + k, j - k, iFin, jFin, paso + 1); // Abajo-Izquierda
-                alfilD(m, i + k, j + k, iFin, jFin, paso + 1); // Abajo-Derecha
+            // Generamos los movimientos válidos del alfil desde la posición actual
+            LinkedList<Regla> L1 = reglasAplicablesAlfil(m, i, j);
+            while (!L1.isEmpty()) {
+                Regla R = L1.removeFirst();  // Tomamos la primera regla disponible
+                // Llamada recursiva con el siguiente paso
+                LaberintoAlfilD(m, R.fil, R.col, ifin, jfin, paso + 1, totalVisitadas, max);
             }
         }
 
-        // Backtracking: Desmarcamos la casilla para futuras exploraciones
+        // Backtracking: Restablecemos la celda actual para futuras exploraciones
         m[i][j] = 0;
+        totalVisitadas--;
     }
 
 //    e)      Algoritmo para mostrar todos los caminos posibles 
 //            de mínima longitud desde una posición inicial a una posición final. 
 //            Además, mostrar la cantidad de soluciones posibles.
-    // Clase auxiliar para representar un estado del tablero
-    static class Estado {
-        int i, j;  // Coordenadas en el tablero
-        List<int[]> camino;  // Camino recorrido hasta el momento
+    public static int e = 0;
 
-        Estado(int i, int j, List<int[]> camino) {
-            this.i = i;
-            this.j = j;
-            this.camino = new ArrayList<>(camino);
-            this.camino.add(new int[]{i, j});
+    public static void LaberintoAlfilE(int[][] m, int i, int j, int ifin, int jfin, int paso,
+                                       int totalVisitadas, int minLongitud) {
+        if (!posValida(m, i, j)) {
+            return;  // Si la posición no es válida, terminamos esta rama de recursión.
         }
-    }
 
-    // Muestra un camino
-    public static void mostrarCamino(List<int[]> camino) {
-        for (int[] paso : camino) {
-            System.out.print("(" + paso[0] + ", " + paso[1] + ") -> ");
-        }
-        System.out.println("FIN");
-    }
+        m[i][j] = paso;  // Marcamos la celda con el paso actual.
+        totalVisitadas++;  // Incrementamos el contador de celdas visitadas.
 
-    // Algoritmo BFS para encontrar todos los caminos de mínima longitud
-    public static void bfsMinimo(int[][] m, int iInicio, int jInicio, int iFin, int jFin) {
-        Queue<Estado> cola = new LinkedList<>();
-        cola.add(new Estado(iInicio, jInicio, new ArrayList<>()));
-
-        int minLongitud = Integer.MAX_VALUE;
-        int cantidadSoluciones = 0;
-
-        while (!cola.isEmpty()) {
-            Estado actual = cola.poll();
-            int i = actual.i;
-            int j = actual.j;
-            List<int[]> camino = actual.camino;
-
-            if (i == iFin && j == jFin) {
-                if (camino.size() < minLongitud) {
-                    minLongitud = camino.size();
-                    cantidadSoluciones = 1;
-                    mostrarCamino(camino);
-                } else if (camino.size() == minLongitud) {
-                    cantidadSoluciones++;
-                    mostrarCamino(camino);
-                }
+        if (i == ifin && j == jfin) {
+            // Si alcanzamos la posición final y el camino es de la mínima longitud, mostramos el tablero.
+            if (totalVisitadas == minLongitud) {
+                mostrar(m);  
+                e++;  // Incrementamos el contador de soluciones.
             }
+        } else {
+            // Generamos los movimientos válidos del alfil desde la posición actual.
+            LinkedList<Regla> L1 = reglasAplicablesAlfil(m, i, j);
 
-            for (int k = 1; k < m.length; k++) {
-                if (posValida(m, i - k, j - k)) {
-                    cola.add(new Estado(i - k, j - k, camino));
-                }
-                if (posValida(m, i - k, j + k)) {
-                    cola.add(new Estado(i - k, j + k, camino));
-                }
-                if (posValida(m, i + k, j - k)) {
-                    cola.add(new Estado(i + k, j - k, camino));
-                }
-                if (posValida(m, i + k, j + k)) {
-                    cola.add(new Estado(i + k, j + k, camino));
-                }
+            while (!L1.isEmpty()) {
+                Regla R = L1.removeFirst();  // Tomamos la primera regla disponible.
+                // Llamada recursiva con el siguiente paso.
+                LaberintoAlfilE(m, R.fil, R.col, ifin, jfin, paso + 1, totalVisitadas, minLongitud);
             }
         }
 
-        System.out.println("Cantidad de soluciones de mínima longitud: " + cantidadSoluciones);
+        m[i][j] = 0;  // Restablecemos la celda actual para permitir exploraciones alternativas.
+        totalVisitadas--;
     }
-
+ 
+    
 //    2.      Ejecutar también los algoritmos para todos los incisos, 
 //            incluyendo Atajos en la matriz (valor = -1).
 //    todo lo anterior
@@ -268,17 +290,28 @@ public class Tarea4 {
 
 //        alfilA(alfil, 0, 0, iFin, jFin, 1);
 //        System.out.println("Cantidad de soluciones: " + solucionA);
-//        int a[][] = new int[3][3]; 
-//        alfilB(a, 0, 0, 2, 2, 1);
+        
+//        int a[][] = new int[5][5]; 
+//        alfilB(a, 0, 0, 4, 4, 1);
 //        System.out.println("Cantidad de soluciones: " + solucionB);
+        
 //        alfilC(alfil, iniI, iniJ, iFin, jFin, 1);
 //        System.out.println("Cantidad de soluciones: " + solucionC);
-//        int a[][] = new int[3][3]; 
-//        alfilD(a, iniI, iniJ, 2, 2, 1);
+        
+//        LaberintoAlfilC(alfil, iniI, iniJ, iFin, jFin, 1);
+//        System.out.println("Cantidad de soluciones: " + c);
+
+        
+        int a[][] = new int[4][4]; 
+//        alfilD(a, iniI, iniJ, 3, 3, 1);
 //        System.out.println("Cantidad de soluciones: " + solucionD);
-        // Iniciar la búsqueda desde (0, 0) hasta (3, 3)
-//         int a[][] = new int[3][3]; 
-//        bfsMinLongitud(a, 0, 0, 2, 2);        
+
+        LaberintoAlfilD(a, iniI, iniJ, 3, 3, 1, 0, 5);
+        System.out.println("Cantidad de soluciones: " + d);
+        
+//         LaberintoAlfilE(alfil, iniI, iniJ, iFin, jFin, 1, 0, 1);
+//         System.out.println("Cantidad de soluciones: " + d);
+              
     }
 
 }
